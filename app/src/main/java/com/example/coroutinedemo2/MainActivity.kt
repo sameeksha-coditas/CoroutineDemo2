@@ -11,10 +11,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         GlobalScope.launch(Dispatchers.IO) {
             val time= measureTimeMillis {
-                val answer1=networkCall1()
-                val answer2=networkCall2()
-                Logger.infoLog("Answer1 is $answer1")
-                Logger.infoLog("Answer2 is $answer2")
+
+                val answer1=async { networkCall1() }
+                val answer2=async{ networkCall2() }
+                Logger.infoLog("Answer1 is ${answer1.await()}")
+                Logger.infoLog("Answer2 is ${answer2.await()}")
             }
             Logger.infoLog("Requests took $time ms.")
         }
